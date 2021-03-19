@@ -1,0 +1,8 @@
+SUDOKU NOTES
+
+Components:
+  Square
+  Row
+  Board
+  Undo
+  Status
