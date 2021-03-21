@@ -15,11 +15,11 @@ body {
 }
 
 .square:hover {
-background-color: #eef;
+background-color: #efe;
 }
 
 .square:focus {
-  background-color: #ffe;;
+  background-color: #fafaee;;
 }
 
 .readOnly {
