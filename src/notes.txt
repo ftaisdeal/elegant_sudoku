@@ -1,8 +1,14 @@
 SUDOKU NOTES
 
 Components:
-  Square
-  Row
-  Board
-  Undo
-  Status
+Square
+Undo
+Status
+
+Functions:
+isValid
+isGameOver
+unDo
+
+Methods:
+handleChange

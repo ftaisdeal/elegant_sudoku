@@ -9,9 +9,32 @@ body {
   width: 50px;
   height: 50px;
   text-align: center;
-  font-size: 2em;;
+  font-size: 2em;
+  border: 1px solid #888;
+  background-color: #fff;
+}
+
+.square:hover {
+background-color: #eef;
+}
+
+.square:focus {
+  background-color: #ffe;;
 }
 
 .readOnly {
   background-color: #eee;;
+}
+
+.readOnly:hover {
+  background-color: #eee;;
+}
+
+.colEdge {
+  border-right: 2px solid black;
+}
+
+.rowEdge {
+  display: inline-block;
+  border-bottom: 1px solid black;
 }

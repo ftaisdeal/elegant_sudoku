@@ -1,5 +1,5 @@
 {
-  "name": "sudoku",
+  "name": "sudokuapp",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -9,6 +9,7 @@
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-scripts": "4.0.3",
+    "sudoku": "0.0.3",
     "web-vitals": "^1.0.1"
   },
   "scripts": {

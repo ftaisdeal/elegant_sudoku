@@ -1,11 +1,13 @@
-import React from 'react';
+import React from 'react'
 
 function Number(props) {
   return (
-    <button className="number" onClick={props.onClick}>
+    <button
+      className="number"
+      onClick={props.onClick}>
       {props.value}
     </button>
   );
 }
 
-export default Number;
+export default Number

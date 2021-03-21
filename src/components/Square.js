@@ -1,15 +1,27 @@
-import React from 'react';
+import React from 'react'
 
-function Square(props) {
-  let classEntry = "";
+function handleChange() {
+
+}
+
+const Square = (props) => {
+
+  let value = props.value;
+
+  if (props.value === null) {
+    value = ""
+  }
+
+  let classEntry = ""
+
   if (props.readOnly === true) {
-    classEntry = "square readOnly";
+    classEntry = "square readOnly"
   } else {
-    classEntry = "square";
+    classEntry = "square"
   }
 
   return (
-    <input className={classEntry} name={props.id} value={props.value} readOnly={props.readOnly} />
+    <input className={classEntry} name={props.id} value={value} readOnly={props.readOnly} onChange={handleChange} />
   )
 }
 
