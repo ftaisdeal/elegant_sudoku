@@ -64,7 +64,7 @@ class Game extends React.Component {
       </div>
       <div>
         <Square id={27} value={this.state.values[27]} readOnly={this.state.squares[0][27].readOnly} />
-        <Square id={28} value={this.state.values[28]} readOnly={this.state.squares[0][27].readOnly} />
+        <Square id={28} value={this.state.values[28]} readOnly={this.state.squares[0][28].readOnly} />
         <Square id={29} value={this.state.values[29]} readOnly={this.state.squares[0][29].readOnly} />
         <Square id={30} value={this.state.values[30]} readOnly={this.state.squares[0][30].readOnly} />
         <Square id={31} value={this.state.values[31]} readOnly={this.state.squares[0][31].readOnly} />
