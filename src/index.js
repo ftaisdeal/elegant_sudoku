@@ -9,11 +9,7 @@ let values = sudoku.makepuzzle().map(e => (e != null) ? e + 1 : e)
 let squares = []
 
 function setSquareProps(item, index) {
-  let readOnly = false
-  if (item != null) {
-    readOnly = true
-  }
-
+  const readOnly = (item != null) ? true : false
   squares.push({
     id: index,
     readOnly: readOnly
