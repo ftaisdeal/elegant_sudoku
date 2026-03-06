@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom'
 import './index.css'
 import sudoku from 'sudoku'
 import Square from './components/Square'
-import Number from './components/Number'
 import Status from './components/Status'
 
 function generateNewPuzzle() {
@@ -235,12 +234,13 @@ class Game extends React.Component {
         <div className="control-panel">
           <div className="number-buttons-row">
             {NUMBERS.map(number => (
-              <Number
+              <button
                 key={number}
-                value={number}
+                className={`number-button${this.state.selectedNumber === number ? ' selected' : ''}`}
                 onClick={() => this.handleNumberClick(number)}
-                isSelected={this.state.selectedNumber === number}
-              />
+              >
+                {number}
+              </button>
             ))}
           </div>
           <div className="clear-button-row">
