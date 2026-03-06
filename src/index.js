@@ -7,24 +7,22 @@ import Number from './components/Number'
 import Status from './components/Status'
 
 function generateNewPuzzle() {
-  const puzzle = sudoku.makepuzzle().map(e => (e != null) ? e + 1 : e)
-  const solution = sudoku.solvepuzzle(sudoku.makepuzzle()).map(e => e + 1)
-  const squares = []
+  // Generate a single puzzle and its solution (FIXED: was generating different puzzles)
+  const rawPuzzle = sudoku.makepuzzle()
+  const puzzle = rawPuzzle.map(e => (e != null) ? e + 1 : e)
+  const solution = sudoku.solvepuzzle(rawPuzzle).map(e => e + 1)
   
-  function setSquareProps(item, index) {
-    const readOnly = (item != null) ? true : false
-    squares.push({
-      id: index,
-      readOnly: readOnly
-    })
-  }
-  
-  puzzle.forEach(setSquareProps)
+  // Create square metadata more efficiently
+  const squares = puzzle.map((item, index) => ({
+    id: index,
+    readOnly: item !== null
+  }))
   
   return { puzzle, solution, squares }
 }
 
 const initialPuzzle = generateNewPuzzle()
+const NUMBERS = [1, 2, 3, 4, 5, 6, 7, 8, 9] // Avoid recreating array on each render
 
 class Game extends React.Component {
   constructor(props) {
@@ -92,87 +90,58 @@ class Game extends React.Component {
   validateSudoku = (values) => {
     const errors = new Set()
     
-    // Check rows
+    // Helper function to check for duplicates in a group
+    const checkGroup = (indices) => {
+      const seen = new Map() // Track value -> first index
+      for (const index of indices) {
+        const value = values[index]
+        if (value !== null) {
+          if (seen.has(value)) {
+            // Mark both original and duplicate as errors
+            errors.add(seen.get(value))
+            errors.add(index)
+          } else {
+            seen.set(value, index)
+          }
+        }
+      }
+    }
+    
+    // Check all rows
     for (let row = 0; row < 9; row++) {
-      const seen = new Set()
-      for (let col = 0; col < 9; col++) {
-        const index = row * 9 + col
-        const value = values[index]
-        if (value !== null) {
-          if (seen.has(value)) {
-            errors.add(index)
-            // Mark all duplicates in this row
-            for (let c = 0; c < 9; c++) {
-              if (values[row * 9 + c] === value) {
-                errors.add(row * 9 + c)
-              }
-            }
-          }
-          seen.add(value)
-        }
-      }
+      const rowIndices = Array.from({ length: 9 }, (_, col) => row * 9 + col)
+      checkGroup(rowIndices)
     }
-
-    // Check columns
+    
+    // Check all columns  
     for (let col = 0; col < 9; col++) {
-      const seen = new Set()
-      for (let row = 0; row < 9; row++) {
-        const index = row * 9 + col
-        const value = values[index]
-        if (value !== null) {
-          if (seen.has(value)) {
-            errors.add(index)
-            // Mark all duplicates in this column
-            for (let r = 0; r < 9; r++) {
-              if (values[r * 9 + col] === value) {
-                errors.add(r * 9 + col)
-              }
-            }
-          }
-          seen.add(value)
-        }
-      }
+      const colIndices = Array.from({ length: 9 }, (_, row) => row * 9 + col)
+      checkGroup(colIndices)
     }
-
-    // Check 3x3 boxes
+    
+    // Check all 3x3 boxes
     for (let boxRow = 0; boxRow < 3; boxRow++) {
       for (let boxCol = 0; boxCol < 3; boxCol++) {
-        const seen = new Set()
+        const boxIndices = []
         for (let row = boxRow * 3; row < boxRow * 3 + 3; row++) {
           for (let col = boxCol * 3; col < boxCol * 3 + 3; col++) {
-            const index = row * 9 + col
-            const value = values[index]
-            if (value !== null) {
-              if (seen.has(value)) {
-                errors.add(index)
-                // Mark all duplicates in this box
-                for (let r = boxRow * 3; r < boxRow * 3 + 3; r++) {
-                  for (let c = boxCol * 3; c < boxCol * 3 + 3; c++) {
-                    if (values[r * 9 + c] === value) {
-                      errors.add(r * 9 + c)
-                    }
-                  }
-                }
-              }
-              seen.add(value)
-            }
+            boxIndices.push(row * 9 + col)
           }
         }
+        checkGroup(boxIndices)
       }
     }
-
+    
     return errors
   }
 
-  checkWinCondition = (values) => {
+  checkWinCondition = (values, errors = null) => {
     // Check if all squares are filled
-    for (let i = 0; i < 81; i++) {
-      if (values[i] === null) return false
-    }
+    if (values.some(value => value === null)) return false
     
-    // Check if no errors exist
-    const errors = this.validateSudoku(values)
-    return errors.size === 0
+    // If errors already computed, use them; otherwise validate
+    const validationErrors = errors !== null ? errors : this.validateSudoku(values)
+    return validationErrors.size === 0
   }
 
   handleSquareClick = (index) => {
@@ -196,34 +165,54 @@ class Game extends React.Component {
   }
 
   placeNumber = (index, number) => {
-    const newValues = this.state.currentValues.slice()
+    const newValues = [...this.state.currentValues]
     newValues[index] = number
     
+    // Single validation pass - reuse errors for win check
     const errors = this.validateSudoku(newValues)
-    const gameCompleted = this.checkWinCondition(newValues)
+    const gameCompleted = this.checkWinCondition(newValues, errors)
     
     this.setState({
       currentValues: newValues,
-      errors: errors,
-      gameCompleted: gameCompleted,
+      errors,
+      gameCompleted,
       selectedSquare: null,
       selectedNumber: null
     })
   }
 
   clearSquare = () => {
-    if (this.state.selectedSquare !== null && !this.state.squares[this.state.selectedSquare].readOnly) {
-      const newValues = this.state.currentValues.slice()
-      newValues[this.state.selectedSquare] = null
+    const { selectedSquare, squares, currentValues } = this.state
+    
+    if (selectedSquare !== null && !squares[selectedSquare].readOnly) {
+      const newValues = [...currentValues]
+      newValues[selectedSquare] = null
       
       const errors = this.validateSudoku(newValues)
       
       this.setState({
         currentValues: newValues,
-        errors: errors,
+        errors,
         selectedSquare: null
       })
     }
+  }
+
+  renderClearButton = () => {
+    const { selectedSquare, squares, currentValues } = this.state
+    const canClear = selectedSquare !== null && 
+                    currentValues[selectedSquare] !== null && 
+                    !squares[selectedSquare]?.readOnly
+    
+    return (
+      <button
+        onClick={this.clearSquare}
+        className={`clear-button ${canClear ? 'enabled' : 'disabled'}`}
+        disabled={!canClear}
+      >
+        clear
+      </button>
+    )
   }
 
   render() {
@@ -245,7 +234,7 @@ class Game extends React.Component {
 
         <div className="control-panel">
           <div className="button-row">
-            {[1,2,3,4,5,6,7,8,9].map(number => (
+            {NUMBERS.map(number => (
               <Number
                 key={number}
                 value={number}
@@ -254,20 +243,7 @@ class Game extends React.Component {
               />
             ))}
             <div className="button-spacer"></div>
-            <button
-              onClick={this.clearSquare}
-              className={`clear-button ${
-                (this.state.selectedSquare !== null && 
-                 this.state.currentValues[this.state.selectedSquare] !== null && 
-                 !this.state.squares[this.state.selectedSquare]?.readOnly) ? 
-                'enabled' : 'disabled'
-              }`}
-              disabled={this.state.selectedSquare === null || 
-                       this.state.squares[this.state.selectedSquare]?.readOnly ||
-                       this.state.currentValues[this.state.selectedSquare] === null}
-            >
-              clear
-            </button>
+            {this.renderClearButton()}
           </div>
         </div>
 
