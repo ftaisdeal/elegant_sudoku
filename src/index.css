@@ -1,7 +1,7 @@
 body {
   font: 14px Arial, Helvetica, sans-serif;
   margin: 20px;
-  background-color: #fafafa;
+  background-color: #eee;
   text-align: center;
 }
 
@@ -41,4 +41,8 @@ background-color: #efe;
 .rowEdge {
   display: inline-block;
   border-bottom: 1px solid black;
+}
+
+button {
+  font-weight: normal;
 }

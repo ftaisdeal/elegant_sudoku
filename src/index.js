@@ -250,8 +250,7 @@ class Game extends React.Component {
                         'pointer' : 'not-allowed',
                 opacity: (this.state.selectedSquare !== null && 
                          this.state.currentValues[this.state.selectedSquare] !== null) ? 
-                         1 : 0.6,
-                fontWeight: '200'
+                         1 : 0.6
               }}
               disabled={this.state.selectedSquare === null || 
                        this.state.squares[this.state.selectedSquare]?.readOnly ||
@@ -277,8 +276,7 @@ class Game extends React.Component {
               color: 'white',
               border: 'none',
               borderRadius: '4px',
-              cursor: 'pointer',
-              fontWeight: '200'
+              cursor: 'pointer'
             }}
           >
             new game
