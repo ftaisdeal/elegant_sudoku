@@ -2,6 +2,31 @@
 
 This project is a Sudoku game built with React and was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## Game Features
+
+- **Classic 9x9 Sudoku**: Traditional sudoku puzzles with infinite puzzle generation
+- **Real-time Validation**: Instant error highlighting for conflicting numbers
+- **Dual Input Methods**: Play using either mouse/touch or keyboard controls
+- **Progressive Web App**: Install on your device for native app experience
+- **Responsive Design**: Optimized for both desktop and mobile devices
+
+### How to Play
+
+1. **Select a Square**: Click on any empty square to select it
+2. **Enter Numbers**: 
+   - **Mouse/Touch**: Click the number buttons (1-9) or the "clear" button
+   - **Keyboard**: Press keys 1-9 to enter numbers, Delete/Backspace to clear, Esc to deselect
+3. **Error Detection**: Conflicting numbers are highlighted in red automatically
+4. **Win Condition**: Complete the puzzle with all squares filled and no conflicts
+
+### Controls
+
+- **Mouse/Touch**: Click squares and number buttons
+- **Keyboard Shortcuts**:
+  - `1-9`: Enter numbers into the selected square
+  - `Delete` or `Backspace`: Clear the selected square  
+  - `Escape`: Deselect current square/number
+
 ## Node.js Compatibility
 
 This project has been configured to work with Node.js 24+. The build scripts include the `--openssl-legacy-provider` flag to resolve compatibility issues with newer Node.js versions.
