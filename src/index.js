@@ -285,7 +285,7 @@ class Game extends React.Component {
           </button>
         </div>
         <div className="keyboard-hint">
-          Keyboard: Press 1-9 to enter numbers, Delete/Backspace to clear, Esc to deselect.
+          Keyboard: Press 1-9 to enter numbers, Delete or Backspace to clear, Esc to deselect.
         </div>
       </div>
     )
