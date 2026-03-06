@@ -13,40 +13,6 @@ button {
   font-weight: normal;
 }
 
-.square {
-  width: 50px;
-  height: 50px;
-  text-align: center;
-  font-size: 2em;
-  border: 1px solid #888;
-  background-color: #fff;
-}
-
-.square:hover {
-background-color: #efe;
-}
-
-.square:focus {
-  background-color: #fafaee;;
-}
-
-.readOnly {
-  background-color: #eee;;
-}
-
-.readOnly:hover {
-  background-color: #eee;;
-}
-
-.colEdge {
-  border-right: 2px solid black;
-}
-
-.rowEdge {
-  display: inline-block;
-  border-bottom: 1px solid black;
-}
-
 /* Game Layout Styles */
 .game-container {
   max-width: 600px;
