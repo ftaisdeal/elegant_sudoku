@@ -1,3 +1,27 @@
+# Robots.txt for Sudoku Puzzle Game
 # https://www.robotstxt.org/robotstxt.html
+
+# Allow all web crawlers access to public content
 User-agent: *
-Disallow:
+Allow: /
+Allow: /manifest.json
+Allow: /sudoku-icon.svg
+
+# Disallow potential future admin or API endpoints
+Disallow: /admin/
+Disallow: /api/private/
+Disallow: /_next/
+Disallow: /static/
+
+# Specific rules for major search engines
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+# Future sitemap location (uncomment when sitemap is created)
+# Sitemap: https://yourdomain.com/sitemap.xml
+
+# Preferred host (replace with your actual domain)
+# Host: https://yourdomain.com
