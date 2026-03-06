@@ -194,17 +194,8 @@ class Game extends React.Component {
 
   render() {
     return (
-      <div style={{ maxWidth: '600px', margin: '0 auto', padding: '5px 20px 20px 20px' }}>        
-        <div style={{ 
-          display: 'grid', 
-          gridTemplateColumns: 'repeat(9, 1fr)', 
-          gap: '1px', 
-          backgroundColor: '#333',
-          border: '2px solid #333',
-          marginBottom: '20px',
-          width: 'fit-content',
-          margin: '0 auto'
-        }}>
+      <div className="game-container">        
+        <div className="sudoku-grid">
           {this.state.currentValues.map((value, index) => (
             <Square
               key={index}
@@ -218,13 +209,8 @@ class Game extends React.Component {
           ))}
         </div>
 
-        <div style={{ marginBottom: '20px', marginTop: '20px' }}>
-          <div style={{ 
-            display: 'flex', 
-            justifyContent: 'center', 
-            gap: '5px',
-            flexWrap: 'wrap'
-          }}>
+        <div className="control-panel">
+          <div className="button-row">
             {[1,2,3,4,5,6,7,8,9].map(number => (
               <Number
                 key={number}
@@ -233,25 +219,15 @@ class Game extends React.Component {
                 isSelected={this.state.selectedNumber === number}
               />
             ))}
-            <div style={{ width: '100%' }}></div>
+            <div className="button-spacer"></div>
             <button
               onClick={this.clearSquare}
-              style={{
-                padding: '10px 14px',
-                fontSize: '16px',
-                backgroundColor: (this.state.selectedSquare !== null && 
-                                 this.state.currentValues[this.state.selectedSquare] !== null) ? 
-                                 '#c66' : '#888',
-                color: 'white',
-                border: 'none',
-                borderRadius: '4px',
-                cursor: (this.state.selectedSquare !== null && 
-                        this.state.currentValues[this.state.selectedSquare] !== null) ? 
-                        'pointer' : 'not-allowed',
-                opacity: (this.state.selectedSquare !== null && 
-                         this.state.currentValues[this.state.selectedSquare] !== null) ? 
-                         1 : 0.6
-              }}
+              className={`clear-button ${
+                (this.state.selectedSquare !== null && 
+                 this.state.currentValues[this.state.selectedSquare] !== null && 
+                 !this.state.squares[this.state.selectedSquare]?.readOnly) ? 
+                'enabled' : 'disabled'
+              }`}
               disabled={this.state.selectedSquare === null || 
                        this.state.squares[this.state.selectedSquare]?.readOnly ||
                        this.state.currentValues[this.state.selectedSquare] === null}
@@ -269,15 +245,7 @@ class Game extends React.Component {
         <div style={{ textAlign: 'center' }}>
           <button 
             onClick={this.newGame}
-            style={{
-              padding: '10px 14px',
-              fontSize: '16px',
-              backgroundColor: '#6a6',
-              color: 'white',
-              border: 'none',
-              borderRadius: '4px',
-              cursor: 'pointer'
-            }}
+            className="new-game-button"
           >
             new game
           </button>
