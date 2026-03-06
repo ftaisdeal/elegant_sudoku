@@ -4,27 +4,40 @@ import './index.css'
 import sudoku from 'sudoku'
 import Square from './components/Square'
 
-let values = sudoku.makepuzzle().map(e => (e != null) ? e + 1 : e)
-
-let squares = []
-
-function setSquareProps(item, index) {
-  const readOnly = (item != null) ? true : false
-  squares.push({
-    id: index,
-    readOnly: readOnly
-  })
+function generateNewPuzzle() {
+  const values = sudoku.makepuzzle().map(e => (e != null) ? e + 1 : e)
+  const squares = []
+  
+  function setSquareProps(item, index) {
+    const readOnly = (item != null) ? true : false
+    squares.push({
+      id: index,
+      readOnly: readOnly
+    })
+  }
+  
+  values.forEach(setSquareProps)
+  
+  return { values, squares }
 }
 
-values.forEach(setSquareProps)
+const initialPuzzle = generateNewPuzzle()
 
 class Game extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      values: values,
-      squares: [squares]
+      values: initialPuzzle.values,
+      squares: [initialPuzzle.squares]
     }
+  }
+
+  newGame = () => {
+    const newPuzzle = generateNewPuzzle()
+    this.setState({
+      values: newPuzzle.values,
+      squares: [newPuzzle.squares]
+    })
   }
 
   render() {
@@ -127,6 +140,22 @@ class Game extends React.Component {
         <Square id={78} value={this.state.values[78]} readOnly={this.state.squares[0][78].readOnly} />
         <Square id={79} value={this.state.values[79]} readOnly={this.state.squares[0][79].readOnly} />
         <Square id={80} value={this.state.values[80]} readOnly={this.state.squares[0][80].readOnly} />
+      </div>
+      <div style={{ marginTop: '20px', textAlign: 'center' }}>
+        <button 
+          onClick={this.newGame}
+          style={{
+            padding: '10px 20px',
+            fontSize: '16px',
+            backgroundColor: '#4CAF50',
+            color: 'white',
+            border: 'none',
+            borderRadius: '4px',
+            cursor: 'pointer'
+          }}
+        >
+          New Game
+        </button>
       </div>
     </div>;
   }
