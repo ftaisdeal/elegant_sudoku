@@ -17,7 +17,7 @@
   --border-color: #333;
   --border-radius: 4px;
   --border-radius-large: 6px;
-  --transition: all 0.2s ease;
+  --transition: all 0.1s ease;
 }
 
 /* Reset and base styles */
@@ -284,4 +284,13 @@ button:focus {
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+/* Keyboard Hint */
+.keyboard-hint {
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin-top: 10px;
+  opacity: 0.8;
+  font-style: italic;
 }

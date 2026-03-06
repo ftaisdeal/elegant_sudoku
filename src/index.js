@@ -41,6 +41,40 @@ class Game extends React.Component {
     }
   }
 
+  componentDidMount() {
+    document.addEventListener('keydown', this.handleKeyPress)
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('keydown', this.handleKeyPress)
+  }
+
+  handleKeyPress = (event) => {
+    // Ignore if game is completed
+    if (this.state.gameCompleted) return
+    
+    const key = event.key
+    
+    // Handle number keys 1-9
+    if (key >= '1' && key <= '9') {
+      event.preventDefault()
+      const number = parseInt(key)
+      this.handleNumberClick(number)
+    }
+    
+    // Handle delete/backspace keys
+    else if (key === 'Delete' || key === 'Backspace') {
+      event.preventDefault()
+      this.clearSquare()
+    }
+    
+    // Handle escape to deselect
+    else if (key === 'Escape') {
+      event.preventDefault()
+      this.setState({ selectedSquare: null, selectedNumber: null })
+    }
+  }
+
   newGame = () => {
     const newPuzzle = generateNewPuzzle()
     this.setState({
@@ -249,6 +283,9 @@ class Game extends React.Component {
           >
             new game
           </button>
+        </div>
+        <div className="keyboard-hint">
+          Keyboard: Press 1-9 to enter numbers, Delete/Backspace to clear, Esc to deselect.
         </div>
       </div>
     )
