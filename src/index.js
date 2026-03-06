@@ -233,7 +233,7 @@ class Game extends React.Component {
         </div>
 
         <div className="control-panel">
-          <div className="button-row">
+          <div className="number-buttons-row">
             {NUMBERS.map(number => (
               <Number
                 key={number}
@@ -242,7 +242,8 @@ class Game extends React.Component {
                 isSelected={this.state.selectedNumber === number}
               />
             ))}
-            <div className="button-spacer"></div>
+          </div>
+          <div className="clear-button-row">
             {this.renderClearButton()}
           </div>
         </div>
