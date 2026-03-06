@@ -9,6 +9,10 @@ h1 {
   font-weight: 400;
 }
 
+button {
+  font-weight: normal;
+}
+
 .square {
   width: 50px;
   height: 50px;
@@ -43,6 +47,3 @@ background-color: #efe;
   border-bottom: 1px solid black;
 }
 
-button {
-  font-weight: normal;
-}
